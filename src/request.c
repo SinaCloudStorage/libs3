@@ -730,6 +730,8 @@ static S3Status compose_auth_header(const RequestParams *params,
     char b64[((20 + 1) * 4) / 3];
     int b64Len = base64Encode(hmac, 20, b64);
     
+    if (b64Len > 10) {}
+    
     /*
     snprintf(values->authorizationHeader, sizeof(values->authorizationHeader),
              "Authorization: AWS %s:%.*s", params->bucketContext.accessKeyId,
@@ -1379,6 +1381,8 @@ S3Status S3_generate_authenticated_query_string
     // Now base-64 encode the results
     char b64[((20 + 1) * 4) / 3];
     int b64Len = base64Encode(hmac, 20, b64);
+    
+    if (b64Len > 10) {}
 
     // Now urlEncode that
     char signature[sizeof(b64) * 3];
