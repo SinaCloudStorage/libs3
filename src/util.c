@@ -24,10 +24,13 @@
  *
  ************************************************************************** **/
 
+#define _XOPEN_SOURCE
+
 #include <ctype.h>
 #include <string.h>
 #include "util.h"
 #include <time.h>
+#include <sys/time.h>
 
 
 // Convenience utility for making the code look nicer.  Tests a string

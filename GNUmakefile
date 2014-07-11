@@ -256,7 +256,7 @@ $(LIBS3_STATIC): $(LIBS3_SOURCES:%.c=$(BUILD)/obj/%.o)
 .PHONY: s3
 s3: $(BUILD)/bin/s3
 
-$(BUILD)/bin/s3: $(BUILD)/obj/s3.o $(LIBS3_SHARED)
+$(BUILD)/bin/s3: $(BUILD)/obj/s3.o $(LIBS3_STATIC)
 	$(QUIET_ECHO) $@: Building executable
 	@ mkdir -p $(dir $@)
 	$(VERBOSE_SHOW) $(CC) -o $@ $^ $(LDFLAGS)
