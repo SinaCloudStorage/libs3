@@ -31,3 +31,7 @@ VersionX-revision.h
 *.xcuserstate
 
 *.xcuserstate
+
+osx/s3.xcodeproj/project.xcworkspace/xcuserdata/caoli.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcuserstate
