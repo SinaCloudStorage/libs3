@@ -52,10 +52,7 @@ Options:
 
    list                 : Lists owned buckets
      [allDetails]       : Show full details
-
-   test                 : Tests a bucket for existence and accessibility
-     <bucket>           : Bucket to test
-
+     
    create               : Create a new bucket
      <bucket>           : Bucket to create
      [cannedAcl]        : Canned ACL for the bucket (see Canned ACLs)
