@@ -217,7 +217,7 @@ static void usageExit(FILE *out)
 "     [maxkeys]          : Maximum number of keys to return in results set\n"
 "     [allDetails]       : Show full details for each key\n"
 "\n"
-"   getacl               : Get the ACL of a bucket or key\n"
+/*"   getacl               : Get the ACL of a bucket or key\n"
 "     <bucket>[/<key>]   : Bucket or bucket/key to get the ACL of\n"
 "     [filename]         : Output filename for ACL (default is stdout)\n"
 "\n"
@@ -235,7 +235,7 @@ static void usageExit(FILE *out)
 "                          logging\n"
 "     [targetPrefix]     : Key prefix to use for logs\n"
 "     [filename]         : Input filename for ACL (default is stdin)\n"
-"\n"
+"\n"*/
 "   put                  : Puts an object\n"
 "     <bucket>/<key>     : Bucket/key to put object to\n"
 "     [filename]         : Filename to read source data from "
@@ -304,7 +304,7 @@ static void usageExit(FILE *out)
 "  The following canned ACLs are supported:\n"
 "    private (default), public-read, public-read-write, authenticated-read\n"
 "\n"
-" ACL Format:\n"
+/*" ACL Format:\n"
 "\n"
 "  For the getacl and setacl commands, the format of the ACL list is:\n"
 "  1) An initial line giving the owner id in this format:\n"
@@ -327,7 +327,7 @@ static void usageExit(FILE *out)
 "  YYYY-MM-DDTHH:MM:SS[+/-dd:dd].  Examples:\n"
 "      2008-07-29T20:36:14\n"
 "      2008-07-29T20:36:14-06:00\n"
-"      2008-07-29T20:36:14+11:30\n"
+"      2008-07-29T20:36:14+11:30\n"*/
 "\n");
 
     exit(-1);

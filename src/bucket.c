@@ -448,7 +448,7 @@ static S3Status make_list_bucket_callback(ListBucketData *lbData)
     int i;
 
     // Convert IsTruncated
-    int isTruncated = (!strcmp(lbData->isTruncated, "true") ||
+    int isTruncated = (!strcmp(lbData->isTruncated, "True") ||
                        !strcmp(lbData->isTruncated, "1")) ? 1 : 0;
 
     // Convert the contents
