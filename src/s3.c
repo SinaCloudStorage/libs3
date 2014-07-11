@@ -198,9 +198,9 @@ static void usageExit(FILE *out)
 "   list                 : Lists owned buckets\n"
 "     [allDetails]       : Show full details\n"
 "\n"
-"   test                 : Tests a bucket for existence and accessibility\n"
+/*"   test                 : Tests a bucket for existence and accessibility\n"
 "     <bucket>           : Bucket to test\n"
-"\n"
+"\n"*/
 "   create               : Create a new bucket\n"
 "     <bucket>           : Bucket to create\n"
 "     [cannedAcl]        : Canned ACL for the bucket (see Canned ACLs)\n"
