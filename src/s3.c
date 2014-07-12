@@ -2762,8 +2762,8 @@ int main(int argc, char **argv)
     const char *command = argv[optind++];
     
     if (!strcmp(command, "help")) {
-        fprintf(stdout, "\ns3 is a program for performing single requests "
-                "to Amazon S3.\n");
+        fprintf(stdout, "\nThis is a program for performing single requests "
+                "to Sina Cloud Storage.\n");
         usageExit(stdout);
     }
 

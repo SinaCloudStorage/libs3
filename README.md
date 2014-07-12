@@ -14,8 +14,8 @@ libs3
 
 ### Installation / Usage
 
-1. Linux: 使用`make`编译, 在buile下生成: 动态链接库(libs3.so)、静态链接库(libs3.a)、可执行命令行工具(s3)
-2. OSX: 使用XCode编译:osx/s3.xcodeproj, 生成: 静态链接库(libs3.a)、可执行命令行工具(s3-cli)
+1. Linux: 使用`make`编译, 在buile/目录下生成: 动态链接库(libs3.so)、静态链接库(libs3.a)、可执行命令行工具(s3)
+2. OSX: 使用XCode打开工程:osx/s3.xcodeproj, 编译生成: 静态链接库(libs3.a)、可执行命令行工具(s3-cli)
 3. Windows: 使用MingW进行编译
 
 
@@ -24,9 +24,9 @@ libs3
 1. 调用示例: 源码: src/s3.c
 2. 命令使用:
 ```
-$ ./s3
+$ ./s3 help
 
-Options:
+ Options:
 
    Command Line:
 
@@ -52,7 +52,7 @@ Options:
 
    list                 : Lists owned buckets
      [allDetails]       : Show full details
-     
+
    create               : Create a new bucket
      <bucket>           : Bucket to create
      [cannedAcl]        : Canned ACL for the bucket (see Canned ACLs)
@@ -68,6 +68,14 @@ Options:
      [delimiter]        : Delimiter for rolling up results set
      [maxkeys]          : Maximum number of keys to return in results set
      [allDetails]       : Show full details for each key
+
+   getacl               : Get the ACL of a bucket or key
+     <bucket>[/<key>]   : Bucket or bucket/key to get the ACL of
+     [filename]         : Output filename for ACL (default is stdout)
+
+   setacl               : Set the ACL of a bucket or key
+     <bucket>[/<key>]   : Bucket or bucket/key to set the ACL of
+     [filename]         : Input filename for ACL (default is stdin)
 
    put                  : Puts an object
      <bucket>/<key>     : Bucket/key to put object to
@@ -131,6 +139,30 @@ Options:
 
   The following canned ACLs are supported:
     private (default), public-read, public-read-write, authenticated-read
+
+ ACL Format:
+
+  For the setacl commands, the format of the ACL list is:
+  1) An initial line giving the owner id in this format:
+       OwnerID <Owner ID> <Owner Display Name>
+  2) Optional header lines, giving column headers, starting with the
+     word "Type", or with some number of dashes
+  3) Grant lines, of the form:
+       <Grant Type> (whitespace) <Grantee> (whitespace) <Permission>
+     where Grant Type is one of: UserID, or Group, and
+     Grantee is the identification of the grantee based on this type,
+     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.
+
+  Like this:
+    OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT
+    Type     Grantee                     Display Name                Permission
+    ------   ------------------------    -----------------------     --------------
+    UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        READ
+    UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        WRITE
+    Group    Authenticated AWS Users                                 READ
+    Group    All Users                                               READ
+
+
 
 ```
 
