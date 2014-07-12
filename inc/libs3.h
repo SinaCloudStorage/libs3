@@ -438,11 +438,12 @@ typedef enum
  **/
 typedef enum
 {
-    S3PermissionRead                    = 0,
-    S3PermissionWrite                   = 1,
-    S3PermissionReadACP                 = 2,
-    S3PermissionWriteACP                = 3,
-    S3PermissionFullControl             = 4
+    S3PermissionNone                    = 0,
+    S3PermissionRead                    = 1,
+    S3PermissionWrite                   = 2,
+    S3PermissionReadACP                 = 4,
+    S3PermissionWriteACP                = 8,
+    S3PermissionFullControl             = 16
 } S3Permission;
 
 

@@ -217,7 +217,7 @@ static void usageExit(FILE *out)
 "     [maxkeys]          : Maximum number of keys to return in results set\n"
 "     [allDetails]       : Show full details for each key\n"
 "\n"
-/*"   getacl               : Get the ACL of a bucket or key\n"
+"   getacl               : Get the ACL of a bucket or key\n"
 "     <bucket>[/<key>]   : Bucket or bucket/key to get the ACL of\n"
 "     [filename]         : Output filename for ACL (default is stdout)\n"
 "\n"
@@ -225,7 +225,7 @@ static void usageExit(FILE *out)
 "     <bucket>[/<key>]   : Bucket or bucket/key to set the ACL of\n"
 "     [filename]         : Input filename for ACL (default is stdin)\n"
 "\n"
-"   getlogging           : Get the logging status of a bucket\n"
+/*"   getlogging           : Get the logging status of a bucket\n"
 "     <bucket>           : Bucket to get the logging status of\n"
 "     [filename]         : Output filename for ACL (default is stdout)\n"
 "\n"
@@ -303,6 +303,28 @@ static void usageExit(FILE *out)
 "\n"
 "  The following canned ACLs are supported:\n"
 "    private (default), public-read, public-read-write, authenticated-read\n"
+"\n"
+" ACL Format:\n"
+"\n"
+"  For the setacl commands, the format of the ACL list is:\n"
+"  1) An initial line giving the owner id in this format:\n"
+"       OwnerID <Owner ID> <Owner Display Name>\n"
+"  2) Optional header lines, giving column headers, starting with the\n"
+"     word \"Type\", or with some number of dashes\n"
+"  3) Grant lines, of the form:\n"
+"       <Grant Type> (whitespace) <Grantee> (whitespace) <Permission>\n"
+"     where Grant Type is one of: UserID, or Group, and\n"
+"     Grantee is the identification of the grantee based on this type,\n"
+"     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.\n"
+"\n"
+"  Like this:\n"
+"    OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT\n"
+"    Type     Grantee                     Display Name                Permission\n"
+"    ------   ------------------------    -----------------------     --------------\n"
+"    UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        READ\n"
+"    UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        WRITE\n"
+"    Group    Authenticated AWS Users                                 READ\n"
+"    Group    All Users                                               READ\n"
 "\n"
 /*" ACL Format:\n"
 "\n"
@@ -2223,12 +2245,13 @@ void get_acl(int argc, char **argv, int optindex)
 
     if (statusG == S3StatusOK) {
         fprintf(outfile, "OwnerID %s %s\n", ownerId, ownerDisplayName);
-        fprintf(outfile, "%-6s  %-90s  %-12s\n", " Type", 
-                "                                   User Identifier",
-                " Permission");
+        fprintf(outfile, "%-6s  %-50s  %-12s\n",
+                "Type",
+                "User Identifier",
+                "Permission");
         fprintf(outfile, "------  "
-                "------------------------------------------------------------"
-                "------------------------------  ------------\n");
+                "-------------------------"
+                "-------------------------  ------------------------------\n");
         int i;
         for (i = 0; i < aclGrantCount; i++) {
             S3AclGrant *grant = &(aclGrants[i]);
@@ -2244,9 +2267,13 @@ void get_acl(int argc, char **argv, int optindex)
                 break;
             case S3GranteeTypeCanonicalUser:
                 type = "UserID";
+                /*
                 snprintf(composedId, sizeof(composedId),
                          "%s (%s)", grant->grantee.canonicalUser.id,
                          grant->grantee.canonicalUser.displayName);
+                 */
+                snprintf(composedId, sizeof(composedId),
+                         "%s", grant->grantee.canonicalUser.id);
                 id = composedId;
                 break;
             case S3GranteeTypeAllAwsUsers:
@@ -2262,6 +2289,8 @@ void get_acl(int argc, char **argv, int optindex)
                 id = "Log Delivery";
                 break;
             }
+            
+            /*
             const char *perm;
             switch (grant->permission) {
             case S3PermissionRead:
@@ -2280,7 +2309,36 @@ void get_acl(int argc, char **argv, int optindex)
                 perm = "FULL_CONTROL";
                 break;
             }
-            fprintf(outfile, "%-6s  %-90s  %-12s\n", type, id, perm);
+             */
+            
+            char perm[64] = "";
+            
+            if ((grant->permission & S3PermissionRead) == S3PermissionRead) {
+                
+                strcat(perm, "READ ");
+            }
+            
+            if ((grant->permission & S3PermissionWrite) == S3PermissionWrite) {
+                
+                strcat(perm, "WRITE ");
+            }
+            
+            if ((grant->permission & S3PermissionReadACP) == S3PermissionReadACP) {
+                
+                strcat(perm, "READ_ACP ");
+            }
+            
+            if ((grant->permission & S3PermissionWriteACP) == S3PermissionWriteACP) {
+                
+                strcat(perm, "WRITE_ACP ");
+            }
+            
+            if ((grant->permission & S3PermissionFullControl) == S3PermissionFullControl) {
+                
+                strcat(perm, "FULL_CONTROL ");
+            }
+            
+            fprintf(outfile, "%-6s  %-50s  %-12s\n", type, id, perm);
         }
     }
     else {

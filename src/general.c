@@ -365,7 +365,7 @@ static S3Status convertAclXmlCallback(const char *elementPath,
                 strcpy(grant->grantee.amazonCustomerByEmail.emailAddress,
                        caData->emailAddress);
             }
-            else if (caData->userId[0] && caData->userDisplayName[0]) {
+            else if (caData->userId[0] /*&& caData->userDisplayName[0]*/) {
                 grant->granteeType = S3GranteeTypeCanonicalUser;
                 strcpy(grant->grantee.canonicalUser.id, caData->userId);
                 strcpy(grant->grantee.canonicalUser.displayName, 
@@ -391,7 +391,8 @@ static S3Status convertAclXmlCallback(const char *elementPath,
             else {
                 return S3StatusBadGrantee;
             }
-
+            
+            /*
             if (!strcmp(caData->permission, "READ")) {
                 grant->permission = S3PermissionRead;
             }
@@ -410,6 +411,81 @@ static S3Status convertAclXmlCallback(const char *elementPath,
             else {
                 return S3StatusBadPermission;
             }
+             */
+            
+            char *permissions;
+            permissions = strtok(caData->permission, ",");
+            
+            if (permissions == NULL) {
+                
+                permissions = caData->permission;
+            }
+            
+            grant->permission = S3PermissionNone;
+            //printf("-------%s\n", permissions);
+            
+            if (!strcmp(permissions, "READ")) {
+                grant->permission = grant->permission|S3PermissionRead;
+            }
+            else if (!strcmp(permissions, "WRITE")) {
+                grant->permission = grant->permission|S3PermissionWrite;
+            }
+            else if (!strcmp(permissions, "READ_ACP")) {
+                grant->permission = grant->permission|S3PermissionReadACP;
+            }
+            else if (!strcmp(permissions, "WRITE_ACP")) {
+                grant->permission = grant->permission|S3PermissionWriteACP;
+            }
+            else if (!strcmp(permissions, "FULL_CONTROL")) {
+                grant->permission = grant->permission|S3PermissionFullControl;
+            }
+            else {
+                //return S3StatusBadPermission;
+            }
+            
+            while((permissions = strtok(NULL, ","))) {
+            
+                //printf("-------%s\n", permissions);
+                
+                if (!strcmp(permissions, "READ")) {
+                    grant->permission = grant->permission|S3PermissionRead;
+                }
+                else if (!strcmp(permissions, "WRITE")) {
+                    grant->permission = grant->permission|S3PermissionWrite;
+                }
+                else if (!strcmp(permissions, "READ_ACP")) {
+                    grant->permission = grant->permission|S3PermissionReadACP;
+                }
+                else if (!strcmp(permissions, "WRITE_ACP")) {
+                    grant->permission = grant->permission|S3PermissionWriteACP;
+                }
+                else if (!strcmp(permissions, "FULL_CONTROL")) {
+                    grant->permission = grant->permission|S3PermissionFullControl;
+                }
+                else {
+                    //return S3StatusBadPermission;
+                }
+            }
+            
+            //printf("-----------------------------------\n");
+            
+            /*
+            if (strstr(caData->permission, "READ")) {
+                grant->permission = grant->permission|S3PermissionRead;
+            }
+            if (strstr(caData->permission, "WRITE")) {
+                grant->permission = grant->permission|S3PermissionWrite;
+            }
+            if (strstr(caData->permission, "READ_ACP")) {
+                grant->permission = grant->permission|S3PermissionReadACP;
+            }
+            if (strstr(caData->permission, "WRITE_ACP")) {
+                grant->permission = grant->permission|S3PermissionWriteACP;
+            }
+            if (strstr(caData->permission, "FULL_CONTROL")) {
+                grant->permission = grant->permission|S3PermissionFullControl;
+            }
+             */
 
             (*(caData->aclGrantCountReturn))++;
 
