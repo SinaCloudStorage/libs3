@@ -1,6 +1,6 @@
 libs3
 ===================
-libs3 for 新浪云存储
+新浪云存储 C/C++ SDK
 
 ### Requirements
 
