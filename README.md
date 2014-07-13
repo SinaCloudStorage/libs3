@@ -1,27 +1,25 @@
 libs3
-============
-
-新浪云存储 - libs3
+===================
+libs3 for 新浪云存储
 
 ### Requirements
 
 * libcurl
 * libcurl-devel
-* libxml2                                                              
-* libxml2-devel 
+* libxml2                                      
+* libxml2-devel
 
 > For CentOS, you will need to run `yum install libcurl* libxml2*`.
 
-### Installation / Usage
+### Installation
 
-1. Linux: 使用`make`编译, 在buile/目录下生成: 动态链接库(libs3.so)、静态链接库(libs3.a)、可执行命令行工具(s3)
+1. Linux: 使用`make`编译, 编译后在buile/目录下生成: 1.动态链接库(libs3.so)、2.静态链接库(libs3.a)、3.可执行命令行工具(s3)
 2. OSX: 使用XCode打开工程:osx/s3.xcodeproj, 编译生成: 静态链接库(libs3.a)、可执行命令行工具(s3-cli)
-3. Windows: 使用MingW进行编译
-
+3. Windows: 目前只支持MingW编译
 
 ### 调用示例 & 命令行工具使用
 
-1. 调用示例: 源码: src/s3.c
+1. 示例源码: src/s3.c
 2. 命令使用:
 ```
 $ ./s3 help
@@ -129,7 +127,7 @@ $ ./s3 help
    head                 : Gets only the headers of an object, implies -s
      <bucket>/<key>     : Bucket/key of object to get headers of
 
-   gqs                  : Generates an authenticated query string
+   gqs                  : Generates an authenticated query string url
      <bucket>[/<key>]   : Bucket or bucket/key to generate query string for
      [expires]          : Expiration date for query string
      [resource]         : Sub-resource of key for query string, without a
@@ -162,7 +160,4 @@ $ ./s3 help
     Group    Authenticated AWS Users                                 READ
     Group    All Users                                               READ
 
-
-
 ```
-
