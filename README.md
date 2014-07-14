@@ -21,8 +21,15 @@ libs3
 
 1. 示例源码: src/s3.c
 2. 命令使用:
+
 ```
+#设置环境变量:
+$ export S3_ACCESS_KEY_ID="您的accesskey"
+$ export S3_SECRET_ACCESS_KEY="您的secretkeykey"
+
 $ ./s3 help
+
+This is a program for performing single requests to Sina Cloud Storage.
 
  Options:
 
@@ -37,9 +44,9 @@ $ ./s3 help
 
    Environment:
 
-   S3_ACCESS_KEY_ID     : S3 access key ID (required)
-   S3_SECRET_ACCESS_KEY : S3 secret access key (required)
-   S3_HOSTNAME          : specify alternative S3 host (optional)
+   S3_ACCESS_KEY_ID     : access key ID (required)
+   S3_SECRET_ACCESS_KEY : secret access key (required)
+   S3_HOSTNAME          : specify alternative host (optional)
 
  Commands (with <required parameters> and [optional parameters]) :
 
@@ -127,7 +134,7 @@ $ ./s3 help
    head                 : Gets only the headers of an object, implies -s
      <bucket>/<key>     : Bucket/key of object to get headers of
 
-   gqs                  : Generates an authenticated query string url
+   gqs                  : Generates an authenticated query string
      <bucket>[/<key>]   : Bucket or bucket/key to generate query string for
      [expires]          : Expiration date for query string
      [resource]         : Sub-resource of key for query string, without a
@@ -150,8 +157,7 @@ $ ./s3 help
      where Grant Type is one of: UserID, or Group, and
      Grantee is the identification of the grantee based on this type,
      and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.
-
-  Like this:
+  Examples:
     OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT
     Type     Grantee                     Display Name                Permission
     ------   ------------------------    -----------------------     --------------
@@ -159,5 +165,13 @@ $ ./s3 help
     UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        WRITE
     Group    Authenticated AWS Users                                 READ
     Group    All Users                                               READ
+
+ Date Format:
+
+  The format for dates used in parameters is as ISO 8601 dates, i.e.
+  YYYY-MM-DDTHH:MM:SS[+/-dd:dd].  Examples:
+      2008-07-29T20:36:14
+      2008-07-29T20:36:14-06:00
+      2008-07-29T20:36:14+11:30
 
 ```
