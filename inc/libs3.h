@@ -632,7 +632,8 @@ typedef struct S3AclGrant
     /**
      * This is the S3Permission to be granted to the grantee
      **/
-    S3Permission permission;
+    //S3Permission permission;
+    int permission;
 } S3AclGrant;
 
 
