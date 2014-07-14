@@ -316,7 +316,6 @@ static void usageExit(FILE *out)
 "     where Grant Type is one of: UserID, or Group, and\n"
 "     Grantee is the identification of the grantee based on this type,\n"
 "     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.\n"
-"\n"
 "  Examples:\n"
 "    OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT\n"
 "    Type     Grantee                     Display Name                Permission\n"
@@ -342,14 +341,14 @@ static void usageExit(FILE *out)
 "  Note that the easiest way to modify an ACL is to first get it, saving it\n"
 "  into a file, then modifying the file, and then setting the modified file\n"
 "  back as the new ACL for the bucket/object.\n"
-"\n"
+"\n"*/
 " Date Format:\n"
 "\n"
 "  The format for dates used in parameters is as ISO 8601 dates, i.e.\n"
 "  YYYY-MM-DDTHH:MM:SS[+/-dd:dd].  Examples:\n"
 "      2008-07-29T20:36:14\n"
 "      2008-07-29T20:36:14-06:00\n"
-"      2008-07-29T20:36:14+11:30\n"*/
+"      2008-07-29T20:36:14+11:30\n"
 "\n");
 
     exit(-1);
