@@ -74,18 +74,26 @@ static S3Status xmlCallback(const char *elementPath, const char *data,
         }
          */
         
-        if (!strcmp(elementPath, "Buckets/Owner/ID")) {
+        if (!strcmp(elementPath, "ListAllMyBucketsResult/Owner/ID") ||
+            !strcmp(elementPath, "Buckets/Owner/ID")) {
             string_buffer_append(cbData->ownerId, data, dataLen, fit);
         }
         else if (!strcmp(elementPath,
+                         "ListAllMyBucketsResult/Owner/DisplayName") ||
+                 !strcmp(elementPath,
                          "Buckets/Owner/DisplayName")) {
             string_buffer_append(cbData->ownerDisplayName, data, dataLen, fit);
         }
         else if (!strcmp(elementPath,
+                         "ListAllMyBucketsResult/Buckets/Bucket/Name") ||
+                 !strcmp(elementPath,
                          "Buckets/Buckets/Bucket/Name")) {
             string_buffer_append(cbData->bucketName, data, dataLen, fit);
         }
         else if (!strcmp
+                 (elementPath,
+                  "ListAllMyBucketsResult/Buckets/Bucket/CreationDate") ||
+                 !strcmp
                  (elementPath,
                   "Buckets/Buckets/Bucket/CreationDate")) {
             string_buffer_append(cbData->creationDate, data, dataLen, fit);
@@ -93,8 +101,9 @@ static S3Status xmlCallback(const char *elementPath, const char *data,
         
     }
     else {
-        if (!strcmp(elementPath, "Buckets/Buckets/Bucket")) {
         //if (!strcmp(elementPath, "ListAllMyBucketsResult/Buckets/Bucket")) {
+        if (!strcmp(elementPath, "ListAllMyBucketsResult/Buckets/Bucket") ||
+            !strcmp(elementPath, "Buckets/Buckets/Bucket")) {
             // Parse date.  Assume ISO-8601 date format.
             time_t creationDate = parseIso8601Time(cbData->creationDate);
 
