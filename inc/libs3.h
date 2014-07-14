@@ -116,6 +116,11 @@ extern "C" {
  ************************************************************************** **/
 
 /**
+ * S3_EXPIRES_TIMEOFFSET applied to x-amz-date
+ **/
+#define S3_EXPIRES_TIMEOFFSET              300
+
+/**
  * S3_MAX_HOSTNAME_SIZE is the maximum size we allow for a host name
  **/
 #define S3_MAX_HOSTNAME_SIZE               255

@@ -317,7 +317,7 @@ static void usageExit(FILE *out)
 "     Grantee is the identification of the grantee based on this type,\n"
 "     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.\n"
 "\n"
-"  Like this:\n"
+"  Examples:\n"
 "    OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT\n"
 "    Type     Grantee                     Display Name                Permission\n"
 "    ------   ------------------------    -----------------------     --------------\n"

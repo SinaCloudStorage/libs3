@@ -332,7 +332,7 @@ static S3Status compose_amz_headers(const RequestParams *params,
     }
 
     // Add the x-amz-date header
-    time_t now = time(NULL);
+    time_t now = time(NULL) + S3_EXPIRES_TIMEOFFSET;
     char date[64];
     strftime(date, sizeof(date), "%a, %d %b %Y %H:%M:%S GMT", gmtime(&now));
     headers_append(1, "x-amz-date: %s", date);
