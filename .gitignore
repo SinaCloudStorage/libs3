@@ -13,7 +13,7 @@ profile
 .svn
 Products
 
- Mac OS X Finder and whatnot
+# Mac OS X Finder and whatnot
 .DS_Store
 
 # XCode (and ancestors) per-user config (very noisy, and not relevant)
@@ -29,9 +29,4 @@ xcuserdata
 # Generated files
 VersionX-revision.h
 *.xcuserstate
-
-*.xcuserstate
-
-osx/s3.xcodeproj/project.xcworkspace/xcuserdata/caoli.xcuserdatad/UserInterfaceState.xcuserstate
-
-*.xcuserstate
+osx/s3.xcodeproj/xcuserdata
