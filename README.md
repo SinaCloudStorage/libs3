@@ -24,8 +24,8 @@ libs3
 
 ```
 #设置环境变量:
-$ export S3_ACCESS_KEY_ID="您的accesskey"
-$ export S3_SECRET_ACCESS_KEY="您的secretkeykey"
+$ export S3_ACCESS_KEY_ID="您的access key"
+$ export S3_SECRET_ACCESS_KEY="您的secret key"
 
 $ ./s3 help
 
