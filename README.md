@@ -62,7 +62,6 @@ This is a program for performing single requests to Sina Cloud Storage.
    create               : Create a new bucket
      <bucket>           : Bucket to create
      [cannedAcl]        : Canned ACL for the bucket (see Canned ACLs)
-     [location]         : Location for bucket (for example, EU)
 
    delete               : Delete a bucket or key
      <bucket>[/<key>]   : Bucket or bucket/key to delete
@@ -139,7 +138,7 @@ This is a program for performing single requests to Sina Cloud Storage.
      <bucket>[/<key>]   : Bucket or bucket/key to generate query string for
      [expires]          : Expiration date for query string
      [resource]         : Sub-resource of key for query string, without a
-                          leading '?', for example, "torrent"
+                          leading '?', for example, "meta"
 
  Canned ACLs:
 
