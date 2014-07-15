@@ -359,19 +359,8 @@ static S3Status convertAclXmlCallback(const char *elementPath,
 
             S3AclGrant *grant = &(caData->aclGrants
                                   [*(caData->aclGrantCountReturn)]);
-
-            if (caData->emailAddress[0]) {
-                grant->granteeType = S3GranteeTypeAmazonCustomerByEmail;
-                strcpy(grant->grantee.amazonCustomerByEmail.emailAddress,
-                       caData->emailAddress);
-            }
-            else if (caData->userId[0] /*&& caData->userDisplayName[0]*/) {
-                grant->granteeType = S3GranteeTypeCanonicalUser;
-                strcpy(grant->grantee.canonicalUser.id, caData->userId);
-                strcpy(grant->grantee.canonicalUser.displayName, 
-                       caData->userDisplayName);
-            }
-            else if (caData->groupUri[0]) {
+            
+            if (caData->groupUri[0]) {
                 if (!strcmp(caData->groupUri,
                             ACS_GROUP_AWS_USERS)) {
                     grant->granteeType = S3GranteeTypeAllAwsUsers;
@@ -381,12 +370,23 @@ static S3Status convertAclXmlCallback(const char *elementPath,
                     grant->granteeType = S3GranteeTypeAllUsers;
                 }
                 else if (!strcmp(caData->groupUri,
-                                 ACS_GROUP_LOG_DELIVERY)) {
+                            ACS_GROUP_LOG_DELIVERY)) {
                     grant->granteeType = S3GranteeTypeLogDelivery;
                 }
                 else {
                     return S3StatusBadGrantee;
                 }
+            }
+            else if (caData->emailAddress[0]) {
+                grant->granteeType = S3GranteeTypeAmazonCustomerByEmail;
+                strcpy(grant->grantee.amazonCustomerByEmail.emailAddress,
+                       caData->emailAddress);
+            }
+            else if (caData->userId[0] /*&& caData->userDisplayName[0]*/) {
+                grant->granteeType = S3GranteeTypeCanonicalUser;
+                strcpy(grant->grantee.canonicalUser.id, caData->userId);
+                strcpy(grant->grantee.canonicalUser.displayName, 
+                       caData->userDisplayName);
             }
             else {
                 return S3StatusBadGrantee;

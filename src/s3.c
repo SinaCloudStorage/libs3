@@ -306,7 +306,7 @@ static void usageExit(FILE *out)
 "\n"
 " ACL Format:\n"
 "\n"
-"  For the setacl commands, the format of the ACL list is:\n"
+"  For the getacl and setacl commands, the format of the ACL list is:\n"
 "  1) An initial line giving the owner id in this format:\n"
 "       OwnerID <Owner ID> <Owner Display Name>\n"
 "  2) Optional header lines, giving column headers, starting with the\n"
@@ -316,6 +316,7 @@ static void usageExit(FILE *out)
 "     where Grant Type is one of: UserID, or Group, and\n"
 "     Grantee is the identification of the grantee based on this type,\n"
 "     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.\n"
+"\n"
 "  Examples:\n"
 "    OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT\n"
 "    Type     Grantee                     Display Name                Permission\n"
@@ -325,23 +326,10 @@ static void usageExit(FILE *out)
 "    Group    Authenticated AWS Users                                 READ\n"
 "    Group    All Users                                               READ\n"
 "\n"
-/*" ACL Format:\n"
-"\n"
-"  For the getacl and setacl commands, the format of the ACL list is:\n"
-"  1) An initial line giving the owner id in this format:\n"
-"       OwnerID <Owner ID> <Owner Display Name>\n"
-"  2) Optional header lines, giving column headers, starting with the\n"
-"     word \"Type\", or with some number of dashes\n"
-"  3) Grant lines, of the form:\n"
-"       <Grant Type> (whitespace) <Grantee> (whitespace) <Permission>\n"
-"     where Grant Type is one of: Email, UserID, or Group, and\n"
-"     Grantee is the identification of the grantee based on this type,\n"
-"     and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.\n"
-"\n"
 "  Note that the easiest way to modify an ACL is to first get it, saving it\n"
 "  into a file, then modifying the file, and then setting the modified file\n"
 "  back as the new ACL for the bucket/object.\n"
-"\n"*/
+"\n"
 " Date Format:\n"
 "\n"
 "  The format for dates used in parameters is as ISO 8601 dates, i.e.\n"
@@ -2243,13 +2231,14 @@ void get_acl(int argc, char **argv, int optindex)
     } while (S3_status_is_retryable(statusG) && should_retry());
 
     if (statusG == S3StatusOK) {
-        fprintf(outfile, "OwnerID %s %s\n", ownerId, ownerDisplayName);
-        fprintf(outfile, "%-6s  %-50s  %-12s\n",
+        fprintf(outfile, "%-7s  %-25s  %-25s\n", "OwnerID", ownerId, ownerDisplayName[0] ? ownerDisplayName : ownerId);
+        fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n",
                 "Type",
-                "User Identifier",
+                "Grantee",
+                "Display Name",
                 "Permission");
-        fprintf(outfile, "------  "
-                "-------------------------"
+        fprintf(outfile, "-------  "
+                "-------------------------  "
                 "-------------------------  ------------------------------\n");
         int i;
         for (i = 0; i < aclGrantCount; i++) {
@@ -2257,12 +2246,16 @@ void get_acl(int argc, char **argv, int optindex)
             const char *type;
             char composedId[S3_MAX_GRANTEE_USER_ID_SIZE + 
                             S3_MAX_GRANTEE_DISPLAY_NAME_SIZE + 16];
+            char composedDisplayName[S3_MAX_GRANTEE_USER_ID_SIZE +
+                            S3_MAX_GRANTEE_DISPLAY_NAME_SIZE + 16];
             const char *id;
+            const char *displayName;
 
             switch (grant->granteeType) {
             case S3GranteeTypeAmazonCustomerByEmail:
                 type = "Email";
                 id = grant->grantee.amazonCustomerByEmail.emailAddress;
+                displayName = grant->grantee.amazonCustomerByEmail.emailAddress;
                 break;
             case S3GranteeTypeCanonicalUser:
                 type = "UserID";
@@ -2274,18 +2267,24 @@ void get_acl(int argc, char **argv, int optindex)
                 snprintf(composedId, sizeof(composedId),
                          "%s", grant->grantee.canonicalUser.id);
                 id = composedId;
+                snprintf(composedDisplayName, sizeof(composedDisplayName),
+                         "%s", grant->grantee.canonicalUser.displayName[0] ? grant->grantee.canonicalUser.displayName : id);
+                displayName = composedDisplayName;
                 break;
             case S3GranteeTypeAllAwsUsers:
                 type = "Group";
                 id = "Authenticated AWS Users";
+                displayName = "";
                 break;
             case S3GranteeTypeAllUsers:
                 type = "Group";
                 id = "All Users";
+                displayName = "";
                 break;
             default:
                 type = "Group";
                 id = "Log Delivery";
+                displayName = "";
                 break;
             }
             
@@ -2315,29 +2314,34 @@ void get_acl(int argc, char **argv, int optindex)
             if ((grant->permission & S3PermissionRead) == S3PermissionRead) {
                 
                 strcat(perm, "READ ");
+                fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, "READ");
             }
             
             if ((grant->permission & S3PermissionWrite) == S3PermissionWrite) {
                 
                 strcat(perm, "WRITE ");
+                fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, "WRITE");
             }
             
             if ((grant->permission & S3PermissionReadACP) == S3PermissionReadACP) {
                 
                 strcat(perm, "READ_ACP ");
+                fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, "READ_ACP");
             }
             
             if ((grant->permission & S3PermissionWriteACP) == S3PermissionWriteACP) {
                 
                 strcat(perm, "WRITE_ACP ");
+                fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, "WRITE_ACP");
             }
             
             if ((grant->permission & S3PermissionFullControl) == S3PermissionFullControl) {
                 
                 strcat(perm, "FULL_CONTROL ");
+                fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, "FULL_CONTROL");
             }
             
-            fprintf(outfile, "%-6s  %-50s  %-12s\n", type, id, perm);
+            //fprintf(outfile, "%-7s  %-25s  %-25s  %-12s\n", type, id, displayName, perm);
         }
     }
     else {

@@ -13,20 +13,21 @@ libs3
 
 ### Installation
 
-1. Linux: 使用`make`编译, 编译后在buile/目录下生成: 1.动态链接库(libs3.so)、2.静态链接库(libs3.a)、3.可执行命令行工具(s3)
-2. OSX: 使用XCode打开工程:osx/s3.xcodeproj, 编译生成: 静态链接库(libs3.a)、可执行命令行工具(s3-cli)
-3. Windows: 目前只支持MingW编译
+1. Linux: 使用`make`编译, 编译后在buile/目录下生成: 1.动态链接库(libs3.so)、2.静态链接库(libs3.a)、3.可执行命令行工具(s3);
+2. OSX: 用XCode打开工程文件`osx/s3.xcodeproj`, 编译生成: 1.静态链接库(libs3.a)、2.可执行命令行工具(s3-cli);
+3. Windows: 目前只支持MingW编译.
 
-### 调用示例 & 命令行工具使用
+### 调用示例 & 命令行工具
 
 1. 示例源码: src/s3.c
 2. 命令使用:
 
 ```
-#设置环境变量:
+# 设置环境变量:
 $ export S3_ACCESS_KEY_ID="您的access key"
 $ export S3_SECRET_ACCESS_KEY="您的secret key"
 
+# 使用命令行:
 $ ./s3 help
 
 This is a program for performing single requests to Sina Cloud Storage.
@@ -147,7 +148,7 @@ This is a program for performing single requests to Sina Cloud Storage.
 
  ACL Format:
 
-  For the setacl commands, the format of the ACL list is:
+  For the getacl and setacl commands, the format of the ACL list is:
   1) An initial line giving the owner id in this format:
        OwnerID <Owner ID> <Owner Display Name>
   2) Optional header lines, giving column headers, starting with the
@@ -157,6 +158,7 @@ This is a program for performing single requests to Sina Cloud Storage.
      where Grant Type is one of: UserID, or Group, and
      Grantee is the identification of the grantee based on this type,
      and Permission is one of: READ, WRITE, READ_ACP, or FULL_CONTROL.
+
   Examples:
     OwnerID  SINA0000001001HBK3UT        SINA0000001001HBK3UT
     Type     Grantee                     Display Name                Permission
@@ -165,6 +167,10 @@ This is a program for performing single requests to Sina Cloud Storage.
     UserID   SINA0000001001LNL6CP        SINA0000001001LNL6CP        WRITE
     Group    Authenticated AWS Users                                 READ
     Group    All Users                                               READ
+
+  Note that the easiest way to modify an ACL is to first get it, saving it
+  into a file, then modifying the file, and then setting the modified file
+  back as the new ACL for the bucket/object.
 
  Date Format:
 
