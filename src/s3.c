@@ -1835,6 +1835,12 @@ static void copy_object(int argc, char **argv, int optindex)
 
 // get object ----------------------------------------------------------------
 
+typedef struct get_object_callback_data
+{
+    FILE *outfile;
+    //uint64_t contentLength, originalContentLength;
+} get_object_callback_data;
+
 static S3Status getObjectDataCallback(int bufferSize, const char *buffer,
                                       void *callbackData)
 {
