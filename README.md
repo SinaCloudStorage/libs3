@@ -1,6 +1,6 @@
 libs3
 ===================
-新浪云存储 C/C++ SDK
+新浪云存储[C/C++ Library] and [命令行工具]
 
 ### Requirements
 
