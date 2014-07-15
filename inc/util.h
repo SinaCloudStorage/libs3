@@ -39,7 +39,8 @@
 #define ACS_GROUP_AWS_USERS     ACS_URL "global/AuthenticatedUsers"
 #define ACS_GROUP_LOG_DELIVERY  ACS_URL "s3/LogDelivery"
 
-
+#define ACS_GROUP_ALL_USERS_ID  "GRPS000000ANONYMOUSE"
+#define ACS_GROUP_AWS_USERS_ID  "GRPS0000000CANONICAL"
 
 // Derived from S3 documentation
 

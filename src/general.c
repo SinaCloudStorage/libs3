@@ -383,10 +383,22 @@ static S3Status convertAclXmlCallback(const char *elementPath,
                        caData->emailAddress);
             }
             else if (caData->userId[0] /*&& caData->userDisplayName[0]*/) {
-                grant->granteeType = S3GranteeTypeCanonicalUser;
-                strcpy(grant->grantee.canonicalUser.id, caData->userId);
-                strcpy(grant->grantee.canonicalUser.displayName, 
-                       caData->userDisplayName);
+                
+                if (!strcmp(caData->userId, ACS_GROUP_ALL_USERS_ID)) {
+                    
+                    grant->granteeType = S3GranteeTypeAllUsers;
+                }
+                else if (!strcmp(caData->userId, ACS_GROUP_AWS_USERS_ID)) {
+                    
+                    grant->granteeType = S3GranteeTypeAllAwsUsers;
+                }
+                else {
+                    
+                    grant->granteeType = S3GranteeTypeCanonicalUser;
+                    strcpy(grant->grantee.canonicalUser.id, caData->userId);
+                    strcpy(grant->grantee.canonicalUser.displayName,
+                           caData->userDisplayName);
+                }
             }
             else {
                 return S3StatusBadGrantee;
