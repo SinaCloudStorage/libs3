@@ -489,16 +489,32 @@ static S3Status compose_standard_headers(const RequestParams *params,
     // Range header
     if (params->startByte || params->byteCount) {
         if (params->byteCount) {
+            
+#ifdef __MINGW32__
             snprintf(values->rangeHeader, sizeof(values->rangeHeader),
-                     "Range: bytes=%llu-%llu", 
+                     "Range: bytes=%I64u-%I64u",
                      (unsigned long long) params->startByte,
                      (unsigned long long) (params->startByte + 
                                            params->byteCount - 1));
+#else
+            snprintf(values->rangeHeader, sizeof(values->rangeHeader),
+                     "Range: bytes=%llu-%llu",
+                     (unsigned long long) params->startByte,
+                     (unsigned long long) (params->startByte +
+                                           params->byteCount - 1));
+#endif
         }
         else {
+            
+#ifdef __MINGW32__
             snprintf(values->rangeHeader, sizeof(values->rangeHeader),
-                     "Range: bytes=%llu-", 
+                     "Range: bytes=%I64u-",
                      (unsigned long long) params->startByte);
+#else
+            snprintf(values->rangeHeader, sizeof(values->rangeHeader),
+                     "Range: bytes=%llu-",
+                     (unsigned long long) params->startByte);
+#endif
         }
     }
     else {
@@ -885,8 +901,13 @@ static S3Status setup_curl(Request *request,
     // Would use CURLOPT_INFILESIZE_LARGE, but it is buggy in libcurl
     if (params->httpRequestType == HttpRequestTypePUT) {
         char header[256];
+#ifdef __MINGW32__
+        snprintf(header, sizeof(header), "Content-Length: %I64u",
+                 (unsigned long long) params->toS3CallbackTotalSize);
+#else
         snprintf(header, sizeof(header), "Content-Length: %llu",
                  (unsigned long long) params->toS3CallbackTotalSize);
+#endif
         request->headers = curl_slist_append(request->headers, header);
         request->headers = curl_slist_append(request->headers, 
                                              "Transfer-Encoding:");
@@ -1368,7 +1389,11 @@ S3Status S3_generate_authenticated_query_string
     signbuf_append("%s\n", "GET"); // HTTP-Verb
     signbuf_append("%s\n", ""); // Content-MD5
     signbuf_append("%s\n", ""); // Content-Type
+#ifdef __MINGW32__
+    signbuf_append("%I64u\n", (unsigned long long) expires);
+#else
     signbuf_append("%llu\n", (unsigned long long) expires);
+#endif
     signbuf_append("%s", canonicalizedResource);
 
     // Generate an HMAC-SHA-1 of the signbuf
