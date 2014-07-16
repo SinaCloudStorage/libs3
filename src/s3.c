@@ -29,6 +29,12 @@
  * calls to libs3 functions, and prints the results.
  **/
 
+#ifdef __MINGW32__
+    #define stat _stat
+    typedef long off_t;
+    typedef __int64 off64_t;
+#endif
+
 #include <ctype.h>
 #include <getopt.h>
 #include <stdio.h>

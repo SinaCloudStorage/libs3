@@ -33,6 +33,37 @@
 #include <sys/time.h>
 
 
+#ifdef __MINGW32__
+
+#define ALT_E          0x01
+#define ALT_O          0x02
+#define LEGAL_ALT(x)       { ; }
+#define TM_YEAR_BASE   (1970)
+
+static const char *day[7] = {
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday"
+};
+static const char *abday[7] = {
+    "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+};
+static const char *mon[12] = {
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+};
+static const char *abmon[12] = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+
+int conv_num(const char **buf, int *dest, int llim, int ulim);
+int strncasecmp(char *s1, char *s2, size_t n);
+char *strptime(const char *buf, const char *fmt, struct tm *tm);
+
+#endif /* __MINGW32__ */
+
+
 // Convenience utility for making the code look nicer.  Tests a string
 // against a format; only the characters specified in the format are
 // checked (i.e. if the string is longer than the format, the string still
