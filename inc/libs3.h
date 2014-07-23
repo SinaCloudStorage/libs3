@@ -128,7 +128,7 @@ extern "C" {
 /**
  * This is the default hostname that is being used for the S3 requests
  **/
-#define S3_DEFAULT_HOSTNAME                "sinastorage.com"
+#define S3_DEFAULT_HOSTNAME                "sinastorage.cn"
 
 
 /**
