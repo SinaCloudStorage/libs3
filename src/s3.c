@@ -29,6 +29,8 @@
  * calls to libs3 functions, and prints the results.
  **/
 
+#define _FILE_OFFSET_BITS 64
+
 #include <ctype.h>
 #include <getopt.h>
 #include <stdio.h>
